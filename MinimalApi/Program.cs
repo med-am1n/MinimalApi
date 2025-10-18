@@ -8,7 +8,18 @@ builder.Services.AddSingleton<CustomerRepository>();
 
 
 builder.Services.AddEndpointsApiExplorer(); // Required for minimal APIs
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.CustomSchemaIds(type => 
+    {
+        if (type.DeclaringType != null)
+        {
+            return $"{type.DeclaringType.Name}{type.Name}";
+        }
+        return type.Name;
+    });
+});
 
 
 // Extension methods used to add custom information whenever a problemDetails is instantiated in the application.
@@ -41,58 +52,9 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler();
 
 
-app.MapGet("/customers", ([FromServices] CustomerRepository repo) =>
-{
-    return repo.GetAll();
-});
+// EndPoints
+app.AddCustomersEndPoints();
 
-
-app.MapGet("/customers/{id}", ([FromServices] CustomerRepository repo, Guid id) =>
-{
-
-    var customer = repo.GetById(id);
-    return customer is not null ? Results.Ok(customer) : Results.NotFound();
-});
-
-
-app.MapPut("/customers/{id}", ([FromServices] CustomerRepository repo, Guid id, Customer updatedCustomer) =>
-{
-
-    var customer = repo.GetById(id);
-    if (customer is null)
-    {
-        return Results.NotFound();
-    }
-    repo.Update(updatedCustomer);
-    return Results.Ok(updatedCustomer);
-});
-
-
-app.MapDelete("/customers/{id}", ([FromServices] CustomerRepository repo, Guid id) =>
-{
-    repo.Delete(id);
-    return Results.Ok();
-});
-
-
-
-app.MapPost("/customers", ([FromServices] CustomerRepository repo, Customer customer) =>
-{
-    if (string.IsNullOrEmpty(customer.FullName))
-    {
-        // Instantiation of ProblemDetails
-        // return Results.Problem(
-        //     type: "Bad Request",
-        //     title: "Empty Field FullName",
-        //     detail: "FullName can not be empty!",
-        //     statusCode: StatusCodes.Status400BadRequest);
-
-        throw new ProblemException("Empty Field FullName", "FullName can not be empty!"); 
-        
-    }
-    repo.Create(customer);
-    return Results.Created($"/customers/{customer.Id}", customer.Id);
-});
 
 app.Run();
 
