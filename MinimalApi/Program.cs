@@ -53,7 +53,10 @@ app.UseExceptionHandler();
 
 
 // EndPoints
-app.AddCustomersEndPoints();
+// app.AddCustomersEndPoints();
+
+// EndPoints (REPR)
+app.MapEndpoints();
 
 
 app.Run();
