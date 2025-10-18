@@ -1,8 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "AirmmYFvRVJE4lyyRC6GbaULUXBmdGdjYLlTsIjrq0nX76NRnpS1r9Z4FGddOLprzkM6aDsSr6HFdUTqInjbvA==",
+  "dgSpecHash": "DFuxIYLbtRX7XzgttVrKPj0T9KBFO84C7pH7jvBMRdhXityA9WsvtYxN1HX0DGZjhUmHVQ7J17n0xJmUz2a6HQ==",
   "success": true,
-  "projectFilePath": "/home/chellaler/Desktop/repos/MinimalApi/MinimalApi/MinimalApi.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "/home/chellaler/repos/MinimalApi/MinimalApi/MinimalApi.csproj",
+  "expectedPackageFiles": [
+    "/home/chellaler/.nuget/packages/microsoft.extensions.apidescription.server/8.0.0/microsoft.extensions.apidescription.server.8.0.0.nupkg.sha512",
+    "/home/chellaler/.nuget/packages/microsoft.openapi/1.6.25/microsoft.openapi.1.6.25.nupkg.sha512",
+    "/home/chellaler/.nuget/packages/swashbuckle.aspnetcore/9.0.6/swashbuckle.aspnetcore.9.0.6.nupkg.sha512",
+    "/home/chellaler/.nuget/packages/swashbuckle.aspnetcore.swagger/9.0.6/swashbuckle.aspnetcore.swagger.9.0.6.nupkg.sha512",
+    "/home/chellaler/.nuget/packages/swashbuckle.aspnetcore.swaggergen/9.0.6/swashbuckle.aspnetcore.swaggergen.9.0.6.nupkg.sha512",
+    "/home/chellaler/.nuget/packages/swashbuckle.aspnetcore.swaggerui/9.0.6/swashbuckle.aspnetcore.swaggerui.9.0.6.nupkg.sha512"
+  ],
   "logs": []
 }

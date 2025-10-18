@@ -11,6 +11,22 @@ builder.Services.AddEndpointsApiExplorer(); // Required for minimal APIs
 builder.Services.AddSwaggerGen();
 
 
+// Extension methods used to add custom information whenever a problemDetails is instantiated in the application.
+builder.Services.AddProblemDetails(options =>
+{
+    options.CustomizeProblemDetails = context =>
+    {
+        context.ProblemDetails.Instance = $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}";
+        context.ProblemDetails.Extensions.TryAdd("requesrId", context.HttpContext.TraceIdentifier);
+        var activity = context.HttpContext.Features.Get<IHttpActivityFeature>()?.Activity;
+        context.ProblemDetails.Extensions.TryAdd("traceId", activity?.Id);
+    };
+});
+
+
+
+builder.Services.AddExceptionHandler<ProblemExceptionHandler>();
+
 
 var app = builder.Build();
 
@@ -20,6 +36,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 
 }
+
+
+app.UseExceptionHandler();
+
 
 app.MapGet("/customers", ([FromServices] CustomerRepository repo) =>
 {
@@ -60,7 +80,14 @@ app.MapPost("/customers", ([FromServices] CustomerRepository repo, Customer cust
 {
     if (string.IsNullOrEmpty(customer.FullName))
     {
-        return Results.BadRequest();
+        // Instantiation of ProblemDetails
+        // return Results.Problem(
+        //     type: "Bad Request",
+        //     title: "Empty Field FullName",
+        //     detail: "FullName can not be empty!",
+        //     statusCode: StatusCodes.Status400BadRequest);
+
+        throw new ProblemException("Empty Field FullName", "FullName can not be empty!"); 
         
     }
     repo.Create(customer);
