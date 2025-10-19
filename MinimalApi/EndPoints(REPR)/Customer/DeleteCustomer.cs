@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-
+using Data;
 public class DeleteCustomer : IEndpoint
 {
 
     // 1- EndPoint Mapping
     public static void Map(IEndpointRouteBuilder app) => app
-    .MapGet("/customers/{id}", HandleAsync)
+    .MapDelete("/customers/{id}", HandleAsync)
     .WithName("DeleteCustomer")
     .WithSummary("Delete an Customer");
 

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-
+using Data;
 
 // A self Contained Unit of Work breaking down into Three main things:
 public class GetCustomerById :  IEndpoint

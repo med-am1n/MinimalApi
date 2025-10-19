@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-
+using Data;
 public class UpdateCustomer :  IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app) => app

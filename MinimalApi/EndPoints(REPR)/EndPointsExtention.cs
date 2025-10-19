@@ -18,7 +18,8 @@ public static class EndpointsExtention
             .MapEndpoint<CreateCustomer>()
             .MapEndpoint<GetAllCustomers>()
             .MapEndpoint<GetCustomerById>()
-            .MapEndpoint<UpdateCustomer>();
+            .MapEndpoint<UpdateCustomer>()
+            .MapEndpoint<DeleteCustomer>();
 
         // endpoints.MapAuthorizedGroup()
         //     .MapEndpoint<UpdateCustomer>()
