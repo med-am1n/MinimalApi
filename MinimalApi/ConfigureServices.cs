@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http.Features;
 using Serilog;
 using Data;
+using FluentValidation;
 
 namespace Config;
+
 
 public static class ConfigureServices
 {
@@ -13,7 +15,12 @@ public static class ConfigureServices
         builder.AddDatabase();
         builder.AddJwtAuthentication();
         builder.AddProblemDetails();
-        builder.AddExceptionHandler();
+        builder.AddExceptionHandling();
+        builder.Services.AddValidatorsFromAssembly(typeof(ConfigureServices).Assembly);
+        
+        // When using  IValidator<Request> as a parameter in the handler method. (No use of Global Validation Using Filters)
+        //builder.Services.AddValidatorsFromAssemblyContaining<CreateCustomer.RequestValidator>();
+
     }
 
     private static void AddSwagger(this WebApplicationBuilder builder)
@@ -41,9 +48,10 @@ public static class ConfigureServices
         });
     }
 
-    private static void AddExceptionHandler(this WebApplicationBuilder builder)
+    private static void AddExceptionHandling(this WebApplicationBuilder builder)
     {
         builder.Services.AddExceptionHandler<ProblemExceptionHandler>();
+
     }
 
     private static void AddSerilog(this WebApplicationBuilder builder)

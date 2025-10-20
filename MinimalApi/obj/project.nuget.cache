@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "0K/hQNsnSAUhBzrwJdWUaqROE418I0LiSMQ24YFT158iC+BPtYKSzLmE3j46a+D1FV8espfotI47pBZJHL6wjg==",
+  "dgSpecHash": "corsv0zuQ/uoF6h1U2dis3vQDadgtnvAq56Sy2UqNxxYDXCLuwnSQJ36YxAs+ZR0zqIJ/Mr9+ipqMtHMgc7HoQ==",
   "success": true,
   "projectFilePath": "/home/chellaler/Desktop/repos/MinimalApi/MinimalApi/MinimalApi.csproj",
   "expectedPackageFiles": [
+    "/home/chellaler/.nuget/packages/fluentvalidation/12.0.0/fluentvalidation.12.0.0.nupkg.sha512",
+    "/home/chellaler/.nuget/packages/fluentvalidation.aspnetcore/11.3.1/fluentvalidation.aspnetcore.11.3.1.nupkg.sha512",
+    "/home/chellaler/.nuget/packages/fluentvalidation.dependencyinjectionextensions/11.11.0/fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
     "/home/chellaler/.nuget/packages/microsoft.extensions.apidescription.server/8.0.0/microsoft.extensions.apidescription.server.8.0.0.nupkg.sha512",
     "/home/chellaler/.nuget/packages/microsoft.extensions.configuration.abstractions/9.0.0/microsoft.extensions.configuration.abstractions.9.0.0.nupkg.sha512",
     "/home/chellaler/.nuget/packages/microsoft.extensions.configuration.binder/9.0.0/microsoft.extensions.configuration.binder.9.0.0.nupkg.sha512",
