@@ -2,6 +2,8 @@
 using Serilog;
 using Data;
 using FluentValidation;
+using Microsoft.IdentityModel.Tokens;
+using Authentication.Services;
 
 namespace Config;
 
@@ -17,7 +19,7 @@ public static class ConfigureServices
         builder.AddProblemDetails();
         builder.AddExceptionHandling();
         builder.Services.AddValidatorsFromAssembly(typeof(ConfigureServices).Assembly);
-        
+
         // When using  IValidator<Request> as a parameter in the handler method. (No use of Global Validation Using Filters)
         //builder.Services.AddValidatorsFromAssemblyContaining<CreateCustomer.RequestValidator>();
 
@@ -27,10 +29,15 @@ public static class ConfigureServices
     {
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(options =>
-        {
-            options.CustomSchemaIds(type => type.FullName?.Replace('+', '.'));
-            options.InferSecuritySchemes();
-        });
+         {
+             // Approach1 : Using .WithOpenApi() with InferSecuritySchemes() with clean Swagger config is better. 
+             options.CustomSchemaIds(type => type.FullName?.Replace('+', '.'));
+             options.InferSecuritySchemes();
+
+             // Approach2 : Manual Swagger Config
+             // options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme { ... });
+             // options.AddSecurityRequirement(new OpenApiSecurityRequirement { ... });
+         });
     }
 
     private static void AddProblemDetails(this WebApplicationBuilder builder)
@@ -65,6 +72,7 @@ public static class ConfigureServices
     private static void AddDatabase(this WebApplicationBuilder builder)
     {
         builder.Services.AddSingleton<CustomerRepository>();
+        builder.Services.AddSingleton<UserRepository>();
         // builder.Services.AddDbContext<AppDbContext>(options =>
         // {
         //     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
@@ -73,21 +81,21 @@ public static class ConfigureServices
 
     private static void AddJwtAuthentication(this WebApplicationBuilder builder)
     {
-        // builder.Services.AddAuthentication().AddJwtBearer(options =>
-        // {
-        //     options.TokenValidationParameters = new TokenValidationParameters
-        //     {
-        //         IssuerSigningKey = Jwt.SecurityKey(builder.Configuration["Jwt:Key"]!),
-        //         ValidateIssuer = false,
-        //         ValidateAudience = false,
-        //         ValidateLifetime = true,
-        //         ValidateIssuerSigningKey = true,
-        //         ClockSkew = TimeSpan.Zero
-        //     };
-        // });
-        // builder.Services.AddAuthorization();
+        builder.Services.AddAuthentication().AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                IssuerSigningKey = Jwt.SecurityKey(builder.Configuration["Jwt:Key"]!),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ClockSkew = TimeSpan.Zero
+            };
+        });
+        builder.Services.AddAuthorization();
 
-        // builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
-        // builder.Services.AddTransient<Jwt>();
+        builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
+        builder.Services.AddTransient<Jwt>();
     }
 }

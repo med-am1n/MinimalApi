@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using System.Security.Claims;
+using Serilog;
 
 namespace Config;
 
@@ -6,7 +7,6 @@ public static class ConfigureApp
 {
     public static async Task Configure(this WebApplication app)
     {
-
 
         if (app.Environment.IsDevelopment())
         {
@@ -20,6 +20,10 @@ public static class ConfigureApp
         }
         app.UseSerilogRequestLogging();
         app.UseHttpsRedirection();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
         app.UseExceptionHandler();
 
         // EndPoints
@@ -27,6 +31,8 @@ public static class ConfigureApp
 
         // EndPoints (REPR)
         app.MapEndpoints();
+
+
     }
 
     private static async Task EnsureDatabaseCreated(this WebApplication app)

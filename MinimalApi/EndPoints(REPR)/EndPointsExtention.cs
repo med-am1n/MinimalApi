@@ -1,10 +1,17 @@
 
+using Authentication.Endpoints;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.OpenApi;
 public static class EndpointsExtention
 {
     public static void MapEndpoints(this WebApplication app)
     {
-        var endpoints = app.MapGroup("");
+        var endpoints = app.MapGroup("")
+        .AddEndpointFilter<RequestLoggingFilter>()
+        .WithOpenApi();
 
+        endpoints.MapAuthenticationEndpoints();
         endpoints.MapCustomerEndpoints();
     }
 
@@ -15,26 +22,24 @@ public static class EndpointsExtention
             .WithTags("Customers");
 
         endpoints.MapPublicGroup()
-            .MapEndpoint<CreateCustomer>()
             .MapEndpoint<GetAllCustomers>()
-            .MapEndpoint<GetCustomerById>()
+            .MapEndpoint<GetCustomerById>();
+
+        endpoints.MapAuthorizedGroup()
+            .MapEndpoint<CreateCustomer>()
             .MapEndpoint<UpdateCustomer>()
             .MapEndpoint<DeleteCustomer>();
-
-        // endpoints.MapAuthorizedGroup()
-        //     .MapEndpoint<UpdateCustomer>()
-        //     .MapEndpoint<DeleteCustomer>();
     }
 
-    // private static void MapAuthenticationEndpoints(this IEndpointRouteBuilder app)
-    // {
-    //     var endpoints = app.MapGroup("/auth")
-    //         .WithTags("Authentication");
+    private static void MapAuthenticationEndpoints(this IEndpointRouteBuilder app)
+    {
+        var endpoints = app.MapGroup("/auth")
+            .WithTags("Authentication");
 
-    //     endpoints.MapPublicGroup()
-    //         .MapEndpoint<Signup>()
-    //         .MapEndpoint<Login>();
-    // }
+        endpoints.MapPublicGroup()
+            .MapEndpoint<Signup>()
+            .MapEndpoint<Login>();
+    }
 
     private static RouteGroupBuilder MapPublicGroup(this IEndpointRouteBuilder app, string? prefix = null)
     {
@@ -46,8 +51,26 @@ public static class EndpointsExtention
     private static RouteGroupBuilder MapAuthorizedGroup(this IEndpointRouteBuilder app, string? prefix = null)
     {
         return app.MapGroup(prefix ?? string.Empty)
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .WithOpenApi(x => new(x)
+            {
+                Security = [new() { [securityScheme] = [] }],
+            });
     }
+
+    private static readonly OpenApiSecurityScheme securityScheme = new()
+    {
+        Type = SecuritySchemeType.Http,
+        Name = JwtBearerDefaults.AuthenticationScheme,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        Reference = new()
+        {
+            Type = ReferenceType.SecurityScheme,
+            Id = JwtBearerDefaults.AuthenticationScheme
+        }
+    };
+
+
     private static IEndpointRouteBuilder MapEndpoint<TEndpoint>(this IEndpointRouteBuilder app) where TEndpoint : IEndpoint
     {
         TEndpoint.Map(app);

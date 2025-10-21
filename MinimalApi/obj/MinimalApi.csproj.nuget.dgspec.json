@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/chellaler/Desktop/repos/MinimalApi/MinimalApi/MinimalApi.csproj": {}
+    "/home/chellaler/repos/MinimalApi/MinimalApi/MinimalApi.csproj": {}
   },
   "projects": {
-    "/home/chellaler/Desktop/repos/MinimalApi/MinimalApi/MinimalApi.csproj": {
+    "/home/chellaler/repos/MinimalApi/MinimalApi/MinimalApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/chellaler/Desktop/repos/MinimalApi/MinimalApi/MinimalApi.csproj",
+        "projectUniqueName": "/home/chellaler/repos/MinimalApi/MinimalApi/MinimalApi.csproj",
         "projectName": "MinimalApi",
-        "projectPath": "/home/chellaler/Desktop/repos/MinimalApi/MinimalApi/MinimalApi.csproj",
+        "projectPath": "/home/chellaler/repos/MinimalApi/MinimalApi/MinimalApi.csproj",
         "packagesPath": "/home/chellaler/.nuget/packages/",
-        "outputPath": "/home/chellaler/Desktop/repos/MinimalApi/MinimalApi/obj/",
+        "outputPath": "/home/chellaler/repos/MinimalApi/MinimalApi/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/chellaler/.nuget/NuGet/NuGet.Config"
@@ -45,6 +45,14 @@
             "FluentValidation.AspNetCore": {
               "target": "Package",
               "version": "[11.3.1, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.0-rc.2.25502.107, )"
+            },
+            "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             },
             "Serilog": {
               "target": "Package",
