@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "H5EtWmfRqtRQ1eorXLJeVexgm+pQAOjDXs4vXt6JCUyqALlB0qRY4YA/mTKu82ArBhBqNQlYXQTpB00xf2tmuA==",
+  "dgSpecHash": "8u+8S3koWfWk1yfaXkwleZIbuNmoEViz6NX7HCru7e8Rgq3SYJ/R3OjK52qLxs6Fg9q2sdxPKPkrm/1VK5mp4g==",
   "success": true,
-  "projectFilePath": "/home/chellaler/repos/MinimalApi/MinimalApi/MinimalApi.csproj",
+  "projectFilePath": "/home/chellaler/Desktop/repos/MinimalApi/MinimalApi/MinimalApi.csproj",
   "expectedPackageFiles": [
     "/home/chellaler/.nuget/packages/fluentvalidation/12.0.0/fluentvalidation.12.0.0.nupkg.sha512",
     "/home/chellaler/.nuget/packages/fluentvalidation.aspnetcore/11.3.1/fluentvalidation.aspnetcore.11.3.1.nupkg.sha512",

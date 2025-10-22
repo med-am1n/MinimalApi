@@ -1,5 +1,4 @@
-﻿using Common.Api.Results;
-using Data;
+﻿using Data;
 using Data.Types;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +24,6 @@ public class EnsureEntityExistsFilter<TRequest, TEntity>(AppDbContext database, 
 
         return exists
             ? await next(context)
-            : new NotFoundProblem($"{typeof(TEntity).Name} with id {id} was not found.");
+            : Results.NotFound($"{typeof(TEntity).Name} with id {id} was not found.");
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using Common.Api.Results;
 using Data;
 using Data.Types;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +25,7 @@ public class EnsureUserOwnsEntityFilter<TRequest, TEntity>(AppDbContext database
 
         return entity switch
         {
-            null => new NotFoundProblem($"{typeof(TEntity).Name} with id {id} was not found."),
+            null => Results.NotFound($"{typeof(TEntity).Name} with id {id} was not found."),
             _ when entity.UserId != userId => TypedResults.Forbid(),
             _ => await next(context)
         };

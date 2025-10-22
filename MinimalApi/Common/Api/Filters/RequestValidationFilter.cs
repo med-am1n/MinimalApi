@@ -20,7 +20,11 @@ public class RequestValidationFilter<TRequest>(ILogger<RequestValidationFilter<T
         if (!validationResult.IsValid)
         {
             logger.LogWarning("{Request}: Validation failed.", requestName);
-            return TypedResults.ValidationProblem(validationResult.ToDictionary());
+
+
+            // var validationErrorMessage = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
+            // throw new ProblemException("Validation Failed", validationErrorMessage);
+            return Results.ValidationProblem(validationResult.ToDictionary());
         }
 
         logger.LogInformation("{Request}: Validation succeeded.", requestName);
