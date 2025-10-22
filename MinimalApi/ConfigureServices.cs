@@ -4,6 +4,7 @@ using Data;
 using FluentValidation;
 using Microsoft.IdentityModel.Tokens;
 using Authentication.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Config;
 
@@ -71,12 +72,9 @@ public static class ConfigureServices
 
     private static void AddDatabase(this WebApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<CustomerRepository>();
-        builder.Services.AddSingleton<UserRepository>();
-        // builder.Services.AddDbContext<AppDbContext>(options =>
-        // {
-        //     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
-        // });
+        builder.Services.AddDbContext<AppDbContext>(options =>
+           options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+
     }
 
     private static void AddJwtAuthentication(this WebApplicationBuilder builder)

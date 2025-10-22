@@ -1,4 +1,5 @@
 ﻿using Data;
+using Data.Types;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

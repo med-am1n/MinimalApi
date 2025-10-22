@@ -1,22 +1,22 @@
 ﻿using Authentication.Services;
+using Common.Api.Extensions;
 using Data;
+using Data.Types;
 using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using RequestValidationInMinimalAPIs.Filters;
+using Microsoft.EntityFrameworkCore;
 
 namespace Authentication.Endpoints;
 
 public class Signup : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app) => app
-        .MapPost("/signup", HandleAsync)
+        .MapPost("/signup", Handle)
         .WithSummary("Creates a new user account")
         .WithRequestValidation<Request>();
 
     public record Request(string Username, string Password, string Name);
     public record Response(string Token);
-
     public class RequestValidator : AbstractValidator<Request>
     {
         public RequestValidator()
@@ -27,38 +27,27 @@ public class Signup : IEndpoint
         }
     }
 
-    private static async Task<Results<Ok<Response>, BadRequest>> HandleAsync(
-        Request request,
-        [FromServices] UserRepository userRepository,  // Use UserRepository instead of AppDbContext
-        Jwt jwt,
-        CancellationToken cancellationToken)
+    private static async Task<Results<Ok<Response>,  BadRequest>> Handle(Request request, AppDbContext database, Jwt jwt, CancellationToken cancellationToken)
     {
-        var isUsernameTaken = userRepository.GetAll()
-            .Any(x => x.Username == request.Username);
+        var isUsernameTaken = await database.Users
+            .AnyAsync(x => x.Username == request.Username, cancellationToken);
 
         if (isUsernameTaken)
         {
             return TypedResults.BadRequest();
         }
 
-
-        var nextId = userRepository.GetAll().Any()
-            ? userRepository.GetAll().Max(u => u.Id) + 1
-            : 1;
-
-        var user = new User(
-            Id: nextId,
-            ReferenceId: Guid.NewGuid(),
-            Username: request.Username,
-            Password: request.Password,
-            DisplayName: request.Name
-        );
-
-        userRepository.Create(user);
+        var user = new User
+        {
+            Username = request.Username,
+            Password = request.Password,
+            DisplayName = request.Name
+        };
+        await database.Users.AddAsync(user, cancellationToken);
+        await database.SaveChangesAsync(cancellationToken);
 
         var token = jwt.GenerateToken(user);
         var response = new Response(token);
         return TypedResults.Ok(response);
     }
 }
-
