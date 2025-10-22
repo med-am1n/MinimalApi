@@ -33,6 +33,7 @@ public class Login : IEndpoint
             return TypedResults.Unauthorized();
         }
 
+        // The server generates a JWT, which includes the user's claims (such as user ID).
         var token = jwt.GenerateToken(user);
         var response = new Response(token);
         return TypedResults.Ok(response);

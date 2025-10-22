@@ -13,6 +13,8 @@ public class EnsureUserOwnsEntityFilter<TRequest, TEntity>(AppDbContext database
     {
         var request = context.Arguments.OfType<TRequest>().Single();
         var cancellationToken = context.HttpContext.RequestAborted;
+
+        // When the user presents the token, the server decodes it and reconstructs a ClaimsPrincipal.
         var userId = context.HttpContext.User.GetUserId();
         var id = idSelector(request);
 
