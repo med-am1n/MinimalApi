@@ -5,6 +5,7 @@ using FluentValidation;
 using Microsoft.IdentityModel.Tokens;
 using Authentication.Services;
 using Microsoft.EntityFrameworkCore;
+using ExceptionHandlers;
 
 namespace Config;
 
@@ -56,9 +57,12 @@ public static class ConfigureServices
         });
     }
 
+    // Registers custom exception handlers for ValidationException and global exceptions.
+    // Ensure `UseExceptionHandler` is not used elsewhere to avoid conflicts.
     private static void AddExceptionHandling(this WebApplicationBuilder builder)
     {
-        builder.Services.AddExceptionHandler<ProblemExceptionHandler>();
+        builder.Services.AddExceptionHandler<ValidationExceptionHandler>();
+        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
     }
 

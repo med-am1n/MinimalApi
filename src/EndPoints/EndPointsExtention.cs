@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using Endpoints.Posts;
 using Posts.Endpoints;
+using Common.Api.Filters;
 public static class EndpointsExtention
 {
     public static void MapEndpoints(this WebApplication app)
@@ -14,6 +15,12 @@ public static class EndpointsExtention
 
         endpoints.MapAuthenticationEndpoints();
         endpoints.MapPostEndpoints();
+
+        app.MapGet("/globalexception-test", () =>
+            {
+                throw new Exception("This is a test exception for global exception handling.");
+            });
+
     }
 
 

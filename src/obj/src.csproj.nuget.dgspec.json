@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/chellaler/Desktop/repos/MinimalApi/src/src.csproj": {}
+    "/home/chellaler/repos/MinimalApi/src/src.csproj": {}
   },
   "projects": {
-    "/home/chellaler/Desktop/repos/MinimalApi/src/src.csproj": {
+    "/home/chellaler/repos/MinimalApi/src/src.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/chellaler/Desktop/repos/MinimalApi/src/src.csproj",
+        "projectUniqueName": "/home/chellaler/repos/MinimalApi/src/src.csproj",
         "projectName": "src",
-        "projectPath": "/home/chellaler/Desktop/repos/MinimalApi/src/src.csproj",
+        "projectPath": "/home/chellaler/repos/MinimalApi/src/src.csproj",
         "packagesPath": "/home/chellaler/.nuget/packages/",
-        "outputPath": "/home/chellaler/Desktop/repos/MinimalApi/src/obj/",
+        "outputPath": "/home/chellaler/repos/MinimalApi/src/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/chellaler/.nuget/NuGet/NuGet.Config"

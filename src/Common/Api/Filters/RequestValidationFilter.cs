@@ -23,7 +23,7 @@ public class RequestValidationFilter<TRequest>(ILogger<RequestValidationFilter<T
 
 
             // var validationErrorMessage = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
-            // throw new ProblemException("Validation Failed", validationErrorMessage);
+            // throw new ValidationException("Validation Failed", validationErrorMessage);
             return Results.ValidationProblem(validationResult.ToDictionary());
         }
 

@@ -3,52 +3,51 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
+namespace ExceptionHandlers;
+
 [Serializable]
-public class ProblemException : Exception
+public class ValidationException : Exception
 {
     public string Error { get; }
 
     public string Message { get; }
 
-    public ProblemException(string error, string message)
+    public ValidationException(string error, string message)
     {
         Error = error;
         Message = message;
     }
 }
 
-public class ProblemExceptionHandler : IExceptionHandler
+public class ValidationExceptionHandler : IExceptionHandler
 {
 
     private readonly IProblemDetailsService _problemDetailsService;
 
 
-    public ProblemExceptionHandler(IProblemDetailsService problemDetailsService)
+    public ValidationExceptionHandler(IProblemDetailsService problemDetailsService)
     {
         _problemDetailsService = problemDetailsService;
     }
 
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        if (exception is not ProblemException problemException)
+        if (exception is not ValidationException validationException)
         {
             return true;
         }
-
-        // Instantiation of ProblemDetails within the ExceptionHendler
-        var problemDetails = new ProblemDetails
-        {
-            Status = StatusCodes.Status400BadRequest,
-            Title = problemException.Error,
-            Detail = problemException.Message,
-            Type = "Bad Request"
-        };
 
         httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
         return await _problemDetailsService.TryWriteAsync(new ProblemDetailsContext
         {
             HttpContext = httpContext,
-            ProblemDetails = problemDetails
+            ProblemDetails = new ProblemDetails
+        {
+            Status = StatusCodes.Status400BadRequest,
+            Title = validationException.Error,
+            Detail = validationException.Message,
+            Type = "Bad Request"
+        }, Exception = exception
         });
 
     }

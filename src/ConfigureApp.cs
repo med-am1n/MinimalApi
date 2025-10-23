@@ -1,4 +1,6 @@
 ﻿using System.Security.Claims;
+using Data;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 namespace Config;
@@ -20,25 +22,25 @@ public static class ConfigureApp
         }
         app.UseSerilogRequestLogging();
         app.UseHttpsRedirection();
-
         app.UseAuthentication();
         app.UseAuthorization();
-
-        app.UseExceptionHandler();
-
-        // EndPoints
-        // app.AddCustomersEndPoints();
+        
+        // Catches all unhandled exceptions and processes them before reaching custom handlers.
+        // (Avoid conflicts, there are a custom handlers already registred)
+        // app.UseExceptionHandler();
 
         // EndPoints (REPR)
         app.MapEndpoints();
+
+        await app.EnsureDatabaseCreated();
 
 
     }
 
     private static async Task EnsureDatabaseCreated(this WebApplication app)
     {
-        // using var scope = app.Services.CreateScope();
-        // var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        // await db.Database.MigrateAsync();
+        using var scope = app.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        await db.Database.MigrateAsync();
     }
 }
